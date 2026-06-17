@@ -1,0 +1,5 @@
+var ARTICLES = [
+  { date:"2026-06-14", title:"东钱湖-天童寺徒步", tags:["原创","生活"], excerpt:"", url:"#", source:"", type:"original", content:"这里山水相依，古木参天。清澈的湖水倒映着青翠的山峦，仿佛一幅流动的水墨画，充满古韵的地方。", video:"https://www.douyin.com/user/self?from_tab_name=live&modal_id=7643335411313429811&showTab=post" },
+  { date:"2026-06-14", title:"三塘村-何俞村-共同村徒步", tags:["原创","生活"], excerpt:"", url:"#", source:"", type:"original", content:"三塘村-何俞村-共同村徒步 这里是宁波太白山麓的徒步秘境，三塘村、何俞村与共同村串联起一幅鲜活的水墨画卷# 我的旅拍 # 古民居 # 户外探险 # 百年古树 # 小溪", video:"https://www.douyin.com/user/self?from_tab_name=main&modal_id=7648484009676115240&showTab=post" },
+  { date:"2026-06-14", title:"这个国产 AI 编程平台顶啊，免费用 MiniMax-M2.7", tags:["AI"], excerpt:"你可以试试 MonkeyCode，这个 AI Coding 平台帮你把云端环境、模型、高频 Skill 全给你配好了，打开浏览器，跟 AI 聊聊天就能把应用做出来。\n\n不想折腾环境，不想研究配置，只想有个想法就能马上动手，这个平台刚好。", url:"https://mp.weixin.qq.com/s/GMP7xX7FhhvHKDZ_mNEuzg", source:"逛逛GitHub" }
+];

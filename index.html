@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>拾光萃集 - 收集值得回看的文字</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0a0e14;--bg2:#12171f;--bg3:#1a1f2b;
+  --text:#cdd6e0;--text2:#8b949e;--text3:#5c6670;
+  --border:#1e2633;--accent:#39bae6;--accent2:#ff8f40;
+  --green:#7fd962;--purple:#d2a6ff;--red:#f26d78;
+  --yellow:#ffd173;--cyan:#73d0ff;--pink:#ff7593;
+  --font-mono:"JetBrains Mono","Fira Code","Cascadia Code","SF Mono",Consolas,monospace;
+  --font-sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans SC",sans-serif;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font-sans);background:var(--bg);
+  color:var(--text);line-height:1.7;min-height:100vh;font-size:15px;
+}
+.layout{display:flex;min-height:100vh}
+.sidebar{
+  width:240px;min-width:240px;background:var(--bg2);
+  border-right:1px solid var(--border);padding:32px 0;
+  position:sticky;top:0;height:100vh;display:flex;flex-direction:column;
+}
+.sidebar-header{padding:0 24px;margin-bottom:32px}
+.sidebar-header h1{font-size:20px;font-weight:700;color:var(--accent);letter-spacing:2px;font-family:var(--font-mono);margin-bottom:4px}
+.sidebar-header .subtitle{font-size:11px;color:var(--text3);font-family:var(--font-mono)}
+.sidebar-nav{flex:1;padding:0 12px}
+.sidebar-nav .nav-label{font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--text3);padding:0 12px;margin-bottom:10px;font-family:var(--font-mono)}
+.sidebar-nav a{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:6px;color:var(--text2);text-decoration:none;font-size:13px;transition:all .15s;margin-bottom:2px}
+.sidebar-nav a:hover{background:var(--bg3);color:var(--text)}
+.sidebar-nav a .count{font-size:11px;color:var(--text3);margin-left:auto;font-family:var(--font-mono)}
+.sidebar-nav a.active{background:var(--bg3);color:var(--accent)}
+.sidebar-nav a.active .count{color:var(--accent)}
+.sidebar-nav a .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.rss-link{margin-top:auto;padding:16px 24px;border-top:1px solid var(--border);display:flex;align-items:center;gap:8px;color:var(--text3);text-decoration:none;font-size:12px;font-family:var(--font-mono);transition:color .15s}
+.rss-link:hover{color:var(--accent2)}
+.rss-link .rss-icon{font-size:16px;color:var(--accent2)}
+.lock-link{padding:8px 24px 16px;display:flex;align-items:center;gap:8px;color:var(--text3);text-decoration:none;font-size:12px;font-family:var(--font-mono);transition:color .15s}
+.lock-link:hover{color:var(--text2)}
+.lock-link.unlocked{color:var(--green)}
+.lock-link.unlocked:hover{color:var(--green)}
+.lock-icon{font-size:14px}
+.main{flex:1;min-width:0}
+.main-header{padding:24px 40px;border-bottom:1px solid var(--border);background:var(--bg2);position:sticky;top:0;z-index:10}
+.main-header .section-name{font-size:14px;color:var(--accent);font-family:var(--font-mono);margin-bottom:4px}
+.main-header h2{font-size:22px;font-weight:600}
+.tag-pool{display:flex;flex-wrap:wrap;gap:8px;padding:20px 40px;border-bottom:1px solid var(--border)}
+.tag-chip{padding:4px 14px;border-radius:20px;font-size:12px;border:1px solid var(--border);color:var(--text2);cursor:pointer;transition:all .15s;font-family:var(--font-mono);background:transparent}
+.tag-chip:hover{border-color:var(--accent);color:var(--accent)}
+.tag-chip.selected{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+.search-bar{padding:20px 40px;border-bottom:1px solid var(--border)}
+.search-input{width:100%;padding:10px 16px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;outline:none;font-family:var(--font-mono);transition:border-color .15s}
+.search-input:focus{border-color:var(--accent)}
+.search-input::placeholder{color:var(--text3)}
+.article-list{padding:0 40px}
+.article-list .date-divider{color:var(--text3);font-size:11px;font-family:var(--font-mono);padding:28px 0 12px;letter-spacing:1px;border-bottom:1px solid var(--border)}
+.article-item{padding:22px 0;border-bottom:1px solid var(--border);display:block;text-decoration:none;color:inherit;transition:background .15s}
+.article-item:hover{background:var(--bg2);margin:0 -40px;padding:22px 40px}
+.article-item .art-meta{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.article-item .art-tags{display:flex;flex-wrap:wrap;gap:6px}
+.article-item .art-tag{font-size:10px;padding:2px 8px;border-radius:4px;font-family:var(--font-mono);font-weight:500}
+.tag-人文{background:rgba(210,166,255,.15);color:var(--purple)}
+.tag-旅游{background:rgba(127,217,98,.15);color:var(--green)}
+.tag-AI{background:rgba(57,186,230,.15);color:var(--accent)}
+.tag-科技{background:rgba(115,208,255,.15);color:var(--cyan)}
+.tag-读书{background:rgba(255,141,64,.15);color:var(--accent2)}
+.tag-设计{background:rgba(255,117,147,.15);color:var(--pink)}
+.tag-生活{background:rgba(255,209,115,.15);color:var(--yellow)}
+.tag-历史{background:rgba(242,109,120,.15);color:var(--red)}
+.tag-哲学{background:rgba(210,166,255,.15);color:var(--purple)}
+.tag-效率{background:rgba(127,217,98,.15);color:var(--green)}
+.tag-开源{background:rgba(57,186,230,.15);color:var(--accent)}
+.tag-前端{background:rgba(115,208,255,.15);color:var(--cyan)}
+.tag-后端{background:rgba(255,141,64,.15);color:var(--accent2)}
+.article-item h3{font-size:16px;font-weight:600;margin-bottom:6px;color:var(--text)}
+.article-item:hover h3{color:var(--accent)}
+.article-item .art-excerpt{font-size:13px;color:var(--text2);line-height:1.6;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.article-item .art-source{margin-top:6px;font-size:11px;color:var(--text3);font-family:var(--font-mono)}
+.article-item .art-source span{color:var(--accent2)}
+.article-item .art-content{font-size:14px;color:var(--text);line-height:1.9;margin-top:14px;padding:16px 20px;background:var(--bg3);border-radius:6px;border-left:2px solid var(--accent)}
+.expand-hint{color:var(--accent);font-size:11px;font-family:var(--font-mono)}
+.video-wrap{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;margin:12px 0;border-radius:6px}
+.video-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none}
+.vid-link{font-size:11px;color:var(--text3);margin-top:4px;font-family:var(--font-mono)}
+.vid-link a{color:var(--accent);text-decoration:none}
+.vid-link a:hover{text-decoration:underline}
+.video-card{display:flex;align-items:center;gap:12px;padding:20px 24px;background:linear-gradient(135deg,var(--bg3),var(--bg4));border-radius:12px;text-decoration:none;color:var(--text);font-size:14px;margin-bottom:12px;border:1px solid var(--border);transition:all .2s}
+.video-card:hover{border-color:var(--accent);box-shadow:0 4px 16px rgba(0,212,255,.12)}
+.vc-icon{font-size:28px;color:var(--accent);flex-shrink:0}
+.vc-arrow{font-size:18px;color:var(--text3);flex-shrink:0}
+.video-card span:nth-child(2){flex:1}
+.empty-state{text-align:center;padding:80px 20px}
+.empty-state .icon{font-size:40px;margin-bottom:16px;color:var(--text3)}
+.empty-state p{color:var(--text2);font-size:14px}
+.stats-bar{display:flex;justify-content:space-between;align-items:center;padding:10px 40px;font-size:11px;color:var(--text3);font-family:var(--font-mono)}
+
+.fab{
+  position:fixed;bottom:32px;right:32px;
+  width:52px;height:52px;border-radius:50%;
+  background:var(--accent);color:var(--bg);border:none;
+  font-size:28px;cursor:pointer;z-index:100;
+  box-shadow:0 4px 16px rgba(57,186,230,.35);
+  transition:all .2s;display:flex;align-items:center;justify-content:center;
+}
+.fab:hover{transform:scale(1.08);box-shadow:0 6px 24px rgba(57,186,230,.5)}
+
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.7);
+  z-index:200;display:none;align-items:center;justify-content:center;
+}
+.modal-overlay.open{display:flex}
+.modal{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:12px;padding:32px;max-width:520px;width:90%;
+  max-height:90vh;overflow-y:auto;
+}
+.modal h3{font-size:18px;color:var(--accent);font-family:var(--font-mono);margin-bottom:24px}
+.form-group{margin-bottom:18px}
+.form-group label{display:block;font-size:12px;color:var(--text2);margin-bottom:6px;font-family:var(--font-mono)}
+.form-group input,.form-group textarea{
+  width:100%;padding:10px 14px;background:var(--bg3);
+  border:1px solid var(--border);border-radius:6px;
+  color:var(--text);font-size:14px;outline:none;font-family:var(--font-sans);
+  transition:border-color .15s;resize:vertical;
+}
+.form-group input:focus,.form-group textarea:focus{border-color:var(--accent)}
+.form-group textarea{min-height:80px}
+.tag-select{display:flex;flex-wrap:wrap;gap:8px}
+.tag-select .tag-opt{
+  padding:4px 14px;border-radius:20px;font-size:12px;
+  border:1px solid var(--border);color:var(--text2);
+  cursor:pointer;transition:all .15s;font-family:var(--font-mono);background:transparent;
+}
+.tag-select .tag-opt:hover{border-color:var(--accent);color:var(--accent)}
+.tag-select .tag-opt.picked{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+.tag-custom-wrap{display:flex;gap:8px;margin-top:8px}
+.tag-custom-wrap input{flex:1;font-size:12px}
+.tag-custom-wrap button{
+  padding:4px 16px;border-radius:6px;font-size:12px;
+  background:var(--accent);color:var(--bg);border:none;cursor:pointer;
+  font-family:var(--font-mono);white-space:nowrap;
+}
+.tag-custom-wrap button:hover{opacity:.85}
+.modal-actions{display:flex;gap:12px;margin-top:28px;justify-content:flex-end}
+.btn-cancel{padding:10px 24px;border-radius:6px;font-size:13px;background:transparent;border:1px solid var(--border);color:var(--text2);cursor:pointer;font-family:var(--font-mono)}
+.btn-cancel:hover{background:var(--bg3)}
+.btn-submit{padding:10px 24px;border-radius:6px;font-size:13px;background:var(--accent);color:var(--bg);border:none;cursor:pointer;font-family:var(--font-mono);font-weight:600}
+.btn-submit:hover{opacity:.85}
+
+.del-btn{
+  background:none;border:1px solid var(--red);color:var(--red);
+  padding:2px 10px;border-radius:4px;font-size:10px;cursor:pointer;
+  font-family:var(--font-mono);margin-left:8px;transition:all .15s;
+}
+.del-btn:hover{background:rgba(242,109,120,.15)}
+.edit-btn{
+  background:none;border:1px solid var(--accent);color:var(--accent);
+  padding:2px 10px;border-radius:4px;font-size:10px;cursor:pointer;
+  font-family:var(--font-mono);margin-left:4px;transition:all .15s;
+}
+.edit-btn:hover{background:rgba(57,186,230,.15)}
+.art-actions{display:flex;align-items:center;gap:8px}
+
+@media(max-width:768px){
+  .layout{flex-direction:column}
+  .sidebar{width:100%;min-width:0;height:auto;position:static;padding:20px 16px;border-right:none;border-bottom:1px solid var(--border)}
+  .sidebar-nav{display:flex;flex-wrap:wrap;gap:4px;padding:0}
+  .sidebar-nav a{padding:6px 12px;font-size:12px}
+  .sidebar-nav .nav-label{display:none}
+  .sidebar-header{margin-bottom:16px}
+  .rss-link{border-top:none;padding:12px 0 0}
+  .lock-link{padding:4px 0 0}
+  .main-header{padding:16px 20px}
+  .main-header h2{font-size:18px}
+  .tag-pool{padding:12px 20px}
+  .search-bar{padding:12px 20px}
+  .article-list{padding:0 20px}
+  .article-item:hover{margin:0 -20px;padding:22px 20px}
+  .stats-bar{padding:10px 20px}
+  .fab{bottom:20px;right:20px}
+}
+</style>
+</head>
+<body>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h1>拾光萃集</h1>
+      <div class="subtitle">curated reads since 2026</div>
+    </div>
+    <nav class="sidebar-nav" id="sidebarNav">
+      <div class="nav-label">分类</div>
+    </nav>
+    <a class="rss-link" href="rss.xml" target="_blank">
+      <span class="rss-icon">&#x25CF;</span> RSS 订阅
+    </a>
+    <a class="lock-link" id="lockToggle" href="#" title="管理模式">
+      <span class="lock-icon" id="lockIcon">&#x1F512;</span>
+      <span id="lockLabel">管理模式</span>
+    </a>
+    <a class="lock-link" id="exportLink" href="#" title="导出文章" style="display:none">
+      <span class="lock-icon">&#x1F4E4;</span>
+      <span>导出文章</span>
+    </a>
+  </aside>
+
+  <main class="main">
+    <div class="main-header">
+      <div class="section-name" id="sectionLabel">ALL ARTICLES</div>
+      <h2 id="sectionTitle">全部文章</h2>
+    </div>
+    <div class="tag-pool" id="tagPool"></div>
+    <div class="search-bar">
+      <input type="text" class="search-input" id="searchInput" placeholder="搜索文章标题 / 摘要 / 标签...">
+    </div>
+    <div class="stats-bar">
+      <span id="statsCount">0 篇文章</span>
+      <span id="statsActions"></span>
+      <span id="statsFilter"></span>
+    </div>
+    <div class="article-list" id="articleList"></div>
+  </main>
+</div>
+
+<button class="fab" id="addBtn" title="添加文章">+</button>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <h3>+ 添加文章</h3>
+    <div class="form-group">
+      <label>文章类型</label>
+      <div class="tag-select" id="articleTypeSelect">
+        <span class="tag-opt picked" data-type="collect">收录文章</span>
+        <span class="tag-opt" data-type="original">原创文章</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>标题</label>
+      <input type="text" id="formTitle" placeholder="输入文章标题...">
+    </div>
+    <div class="form-group" id="groupUrl">
+      <label>原文链接</label>
+      <input type="url" id="formUrl" placeholder="https://...">
+    </div>
+    <div class="form-group" id="groupExcerpt">
+      <label>摘要</label>
+      <textarea id="formExcerpt" placeholder="简要描述这篇文章的内容..."></textarea>
+    </div>
+    <div class="form-group" id="groupSource">
+      <label>来源（选类型后填入具体名称）</label>
+      <div class="tag-select" id="sourceSelect" style="margin-bottom:8px">
+        <span class="tag-opt" data-src="微信公众号">微信公众号</span>
+        <span class="tag-opt" data-src="知乎">知乎</span>
+        <span class="tag-opt" data-src="网站">网站</span>
+        <span class="tag-opt" data-src="其他">其他</span>
+      </div>
+      <div id="wechatHint" style="display:none;font-size:11px;color:var(--text3);margin-bottom:6px;line-height:1.6">
+        微信中打开文章 <span style="color:var(--accent2)">...</span> <span style="color:var(--text2)">复制链接</span>，粘贴到上方「链接」栏
+      </div>
+      <input type="text" id="formSource" placeholder="如：三联生活周刊 / 公众号名称">
+    </div>
+    <div class="form-group" id="groupContent" style="display:none">
+      <label>正文</label>
+      <textarea id="formContent" placeholder="在这里写下你的文章...&#10;&#10;支持多行文字，链接和基本格式。" style="min-height:160px"></textarea>
+    </div>
+    <div class="form-group" id="groupVideo" style="display:none">
+      <label>嵌入视频（可选，粘贴B站/YouTube视频链接）</label>
+      <input type="text" id="formVideo" placeholder="如：https://www.bilibili.com/video/BV1xx411c7mD 或 https://youtube.com/watch?v=xxx">
+      <div style="font-size:11px;color:var(--text3);margin-top:4px">B站链接最稳定，推荐优先使用。抖音嵌入可能不稳定，建议同时发布到B站</div>
+    </div>
+    <div class="form-group">
+      <label>标签（点击选择，或输入自定义标签）</label>
+      <div class="tag-select" id="tagSelect">
+        <span class="tag-opt" data-tag="人文">人文</span>
+        <span class="tag-opt" data-tag="旅游">旅游</span>
+        <span class="tag-opt" data-tag="AI">AI</span>
+        <span class="tag-opt" data-tag="科技">科技</span>
+        <span class="tag-opt" data-tag="读书">读书</span>
+        <span class="tag-opt" data-tag="设计">设计</span>
+        <span class="tag-opt" data-tag="生活">生活</span>
+        <span class="tag-opt" data-tag="历史">历史</span>
+        <span class="tag-opt" data-tag="哲学">哲学</span>
+        <span class="tag-opt" data-tag="效率">效率</span>
+        <span class="tag-opt" data-tag="开源">开源</span>
+        <span class="tag-opt" data-tag="前端">前端</span>
+        <span class="tag-opt" data-tag="后端">后端</span>
+        <span class="tag-opt" data-tag="原创">原创</span>
+      </div>
+      <div class="tag-custom-wrap">
+        <input type="text" id="customTagInput" placeholder="输入自定义标签后点添加...">
+        <button id="addCustomTag">添加</button>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" id="modalCancel">取消</button>
+      <button class="btn-submit" id="modalSubmit">确认添加</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="pwOverlay">
+  <div class="modal" style="max-width:380px">
+    <h3 id="pwTitle">管理模式</h3>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:20px" id="pwDesc">输入密码进入管理模式，可添加和删除文章。</p>
+    <div class="form-group">
+      <input type="password" id="pwInput" placeholder="输入密码..." style="font-family:var(--font-mono);letter-spacing:2px">
+    </div>
+    <div id="pwError" style="font-size:12px;color:var(--red);margin-bottom:12px;display:none">密码错误</div>
+    <div class="modal-actions" style="justify-content:space-between;flex-wrap:wrap;gap:8px">
+      <span style="display:flex;gap:12px">
+        <a href="#" id="pwChangeLink" style="font-size:11px;color:var(--text3);text-decoration:none;font-family:var(--font-mono)">修改密码</a>
+        <a href="#" id="pwForgotLink" style="font-size:11px;color:var(--text3);text-decoration:none;font-family:var(--font-mono)">忘记密码</a>
+      </span>
+      <span>
+        <button class="btn-cancel" id="pwCancel">取消</button>
+        <button class="btn-submit" id="pwSubmit">确认</button>
+      </span>
+    </div>
+
+    <div id="pwChangeForm" style="display:none;margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
+      <div class="form-group">
+        <label>新密码</label>
+        <input type="password" id="newPw" placeholder="设置新密码..." style="font-family:var(--font-mono)">
+      </div>
+      <div class="form-group">
+        <label>确认新密码</label>
+        <input type="password" id="newPw2" placeholder="再次输入..." style="font-family:var(--font-mono)">
+      </div>
+      <div class="form-group">
+        <label>找回密语（忘记密码时凭此重置，自己保管好）</label>
+        <input type="text" id="recoveryPhrase" placeholder="如：我的第一只猫叫什么名字？" style="font-family:var(--font-mono)">
+      </div>
+      <div class="modal-actions">
+        <button class="btn-cancel" id="pwChangeCancel">取消修改</button>
+        <button class="btn-submit" id="pwChangeSubmit">保存密码</button>
+      </div>
+    </div>
+
+    <div id="pwForgotForm" style="display:none;margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
+      <p style="font-size:12px;color:var(--text2);margin-bottom:16px">输入你设置的回找密语以重置密码。</p>
+      <div class="form-group">
+        <label>找回密语</label>
+        <input type="text" id="forgotPhrase" placeholder="输入密语..." style="font-family:var(--font-mono)">
+      </div>
+      <div id="forgotPhraseError" style="font-size:12px;color:var(--red);margin-bottom:12px;display:none"></div>
+      <div class="form-group">
+        <label>新密码</label>
+        <input type="password" id="resetPw" placeholder="设置新密码..." style="font-family:var(--font-mono)">
+      </div>
+      <div class="form-group">
+        <label>确认新密码</label>
+        <input type="password" id="resetPw2" placeholder="再次输入..." style="font-family:var(--font-mono)">
+      </div>
+      <div class="modal-actions">
+        <button class="btn-cancel" id="forgotCancel">返回</button>
+        <button class="btn-submit" id="forgotReset">重置密码</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="exportOverlay">
+  <div class="modal" style="max-width:600px">
+    <h3>导出文章代码</h3>
+    <p style="font-size:12px;color:var(--text2);margin-bottom:12px">复制下方代码，粘贴到 GitHub 仓库的 <code style="color:var(--accent)">articles.js</code> 文件中，提交后全站可见。</p>
+    <textarea id="exportCode" readonly style="width:100%;min-height:200px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:11px;font-family:var(--font-mono);padding:12px;resize:vertical;outline:none" onclick="this.select()"></textarea>
+    <div class="modal-actions" style="margin-top:12px">
+      <button class="btn-cancel" id="exportClose">关闭</button>
+      <button class="btn-submit" id="exportCopy">一键复制</button>
+    </div>
+  </div>
+</div>
+
+<script src="articles.js"></script>
+<script>
+var STORAGE_KEY = "shiguangji_articles";
+var DELETED_KEY = "shiguangji_deleted";
+var userArticles = [];
+var deletedBuiltin = [];
+try{
+  var raw = localStorage.getItem(STORAGE_KEY);
+  if(raw) userArticles = JSON.parse(raw);
+}catch(e){}
+try{
+  var raw2 = localStorage.getItem(DELETED_KEY);
+  if(raw2) deletedBuiltin = JSON.parse(raw2);
+}catch(e){}
+
+function makeId(a){ return a.date + "|" + a.title; }
+
+function allArticles(){
+  var deleted = {};
+  deletedBuiltin.forEach(function(id){ deleted[id] = true; });
+  var builtin = ARTICLES.filter(function(a){ return !deleted[makeId(a)]; });
+  return userArticles.concat(builtin);
+}
+
+var PW_KEY = "shiguangji_pw";
+var RECOVERY_KEY = "shiguangji_recovery";
+var ADMIN_KEY = "shiguangji_admin";
+var isAdmin = false;
+var showingPwChange = false;
+var defaultPassword = "admin";
+var managerPassword = localStorage.getItem(PW_KEY) || defaultPassword;
+
+(function initAuth(){
+  isAdmin = sessionStorage.getItem(ADMIN_KEY) === "1";
+  updateAdminUI();
+})();
+
+function updateAdminUI(){
+  var fab = document.getElementById("addBtn");
+  var lock = document.getElementById("lockToggle");
+  var icon = document.getElementById("lockIcon");
+  var label = document.getElementById("lockLabel");
+  if(isAdmin){
+    fab.style.display = "flex";
+    lock.classList.add("unlocked");
+    icon.innerHTML = "&#x1F513;";
+    label.textContent = "退出管理";
+    document.body.classList.add("admin-mode");
+    document.getElementById("exportLink").style.display = "flex";
+  } else {
+    fab.style.display = "none";
+    lock.classList.remove("unlocked");
+    icon.innerHTML = "&#x1F512;";
+    label.textContent = "管理模式";
+    document.body.classList.remove("admin-mode");
+    document.getElementById("exportLink").style.display = "none";
+  }
+}
+
+var pwOverlay = document.getElementById("pwOverlay");
+var pwInput = document.getElementById("pwInput");
+var pwError = document.getElementById("pwError");
+var pwSubmit = document.getElementById("pwSubmit");
+var pwCancel = document.getElementById("pwCancel");
+var pwTitle = document.getElementById("pwTitle");
+var pwDesc = document.getElementById("pwDesc");
+var pwChangeLink = document.getElementById("pwChangeLink");
+var pwChangeForm = document.getElementById("pwChangeForm");
+var lockToggle = document.getElementById("lockToggle");
+
+lockToggle.addEventListener("click", function(e){
+  e.preventDefault();
+  if(isAdmin){
+    sessionStorage.removeItem(ADMIN_KEY);
+    isAdmin = false;
+    updateAdminUI();
+    renderAll();
+    return;
+  }
+  resetPwModal();
+  pwOverlay.classList.add("open");
+  setTimeout(function(){ pwInput.focus(); }, 100);
+});
+
+function resetPwModal(){
+  showingPwChange = false;
+  pwChangeForm.style.display = "none";
+  pwChangeLink.style.display = "inline";
+  pwForgotLink.style.display = "inline";
+  pwForgotForm.style.display = "none";
+  pwTitle.textContent = "管理模式";
+  pwDesc.textContent = "输入密码进入管理模式，可添加和删除文章。";
+  pwInput.value = "";
+  pwError.style.display = "none";
+  var savedPhrase = localStorage.getItem(RECOVERY_KEY) || "";
+  document.getElementById("recoveryPhrase").value = savedPhrase;
+}
+
+pwSubmit.addEventListener("click", function(){
+  if(pwInput.value === managerPassword){
+    sessionStorage.setItem(ADMIN_KEY, "1");
+    isAdmin = true;
+    updateAdminUI();
+    pwOverlay.classList.remove("open");
+    renderAll();
+  } else {
+    pwError.style.display = "block";
+    pwInput.value = "";
+    pwInput.focus();
+  }
+});
+
+pwCancel.addEventListener("click", function(){
+  pwOverlay.classList.remove("open");
+});
+
+pwOverlay.addEventListener("click", function(e){
+  if(e.target === pwOverlay) pwOverlay.classList.remove("open");
+});
+
+pwInput.addEventListener("keydown", function(e){
+  if(e.key === "Enter") pwSubmit.click();
+});
+
+pwChangeLink.addEventListener("click", function(e){
+  e.preventDefault();
+  showingPwChange = true;
+  pwChangeForm.style.display = "block";
+  pwChangeLink.style.display = "none";
+  pwForgotLink.style.display = "none";
+  pwForgotForm.style.display = "none";
+  pwTitle.textContent = "修改密码";
+  pwDesc.textContent = "设置新的管理模式密码和找回密语。";
+  document.getElementById("newPw").value = "";
+  document.getElementById("newPw2").value = "";
+  document.getElementById("recoveryPhrase").value = localStorage.getItem(RECOVERY_KEY) || "";
+  document.getElementById("newPw").focus();
+});
+
+document.getElementById("pwChangeCancel").addEventListener("click", function(){
+  showingPwChange = false;
+  pwChangeForm.style.display = "none";
+  pwChangeLink.style.display = "inline";
+  pwForgotLink.style.display = "inline";
+  pwTitle.textContent = "管理模式";
+  pwDesc.textContent = "输入密码进入管理模式，可添加和删除文章。";
+});
+
+document.getElementById("pwChangeSubmit").addEventListener("click", function(){
+  var pw1 = document.getElementById("newPw").value;
+  var pw2 = document.getElementById("newPw2").value;
+  var phrase = document.getElementById("recoveryPhrase").value.trim();
+  if(!pw1){ alert("请输入新密码"); return; }
+  if(pw1 !== pw2){ alert("两次密码不一致"); return; }
+  if(pw1.length < 3){ alert("密码至少3位"); return; }
+  managerPassword = pw1;
+  localStorage.setItem(PW_KEY, pw1);
+  if(phrase){
+    localStorage.setItem(RECOVERY_KEY, phrase);
+  } else {
+    localStorage.removeItem(RECOVERY_KEY);
+  }
+  alert("密码修改成功");
+  showingPwChange = false;
+  pwChangeForm.style.display = "none";
+  pwChangeLink.style.display = "inline";
+  pwForgotLink.style.display = "inline";
+  pwTitle.textContent = "管理模式";
+  pwDesc.textContent = "输入密码进入管理模式，可添加和删除文章。";
+  pwOverlay.classList.remove("open");
+  sessionStorage.setItem(ADMIN_KEY, "1");
+  isAdmin = true;
+  updateAdminUI();
+  renderAll();
+});
+
+var pwForgotLink = document.getElementById("pwForgotLink");
+var pwForgotForm = document.getElementById("pwForgotForm");
+var currentVerifyCode = "";
+
+pwForgotLink.addEventListener("click", function(e){
+  e.preventDefault();
+  showingPwChange = false;
+  pwChangeForm.style.display = "none";
+  pwChangeLink.style.display = "none";
+  pwForgotLink.style.display = "none";
+  pwForgotForm.style.display = "block";
+  pwTitle.textContent = "找回密码";
+  pwDesc.textContent = "输入找回密语以重置密码。";
+  document.getElementById("forgotPhrase").value = "";
+  document.getElementById("forgotPhraseError").style.display = "none";
+  document.getElementById("resetPw").value = "";
+  document.getElementById("resetPw2").value = "";
+  pwError.style.display = "none";
+  pwInput.value = "";
+});
+
+document.getElementById("forgotCancel").addEventListener("click", function(){
+  resetPwModal();
+});
+
+document.getElementById("forgotReset").addEventListener("click", function(){
+  var phraseInput = document.getElementById("forgotPhrase").value.trim();
+  var pw1 = document.getElementById("resetPw").value;
+  var pw2 = document.getElementById("resetPw2").value;
+  var savedPhrase = localStorage.getItem(RECOVERY_KEY) || "";
+  var err = document.getElementById("forgotPhraseError");
+  if(!savedPhrase){ err.textContent = "未设置找回密语。请先进入管理模式，通过「修改密码」设置。"; err.style.display = "block"; return; }
+  if(phraseInput !== savedPhrase){ err.textContent = "找回密语不正确"; err.style.display = "block"; return; }
+  if(!pw1){ err.textContent = "请输入新密码"; err.style.display = "block"; return; }
+  if(pw1 !== pw2){ err.textContent = "两次密码不一致"; err.style.display = "block"; return; }
+  if(pw1.length < 3){ err.textContent = "密码至少3位"; err.style.display = "block"; return; }
+  err.style.display = "none";
+  managerPassword = pw1;
+  localStorage.setItem(PW_KEY, pw1);
+  alert("密码重置成功");
+  resetPwModal();
+  pwOverlay.classList.remove("open");
+  sessionStorage.setItem(ADMIN_KEY, "1");
+  isAdmin = true;
+  updateAdminUI();
+  renderAll();
+});
+
+var currentCategory = "全部";
+var selectedTags = [];
+var searchQuery = "";
+var pickedTags = [];
+var articleType = "collect";
+var editingId = null;
+
+var CATEGORIES = [
+  { key:"全部", label:"全部", dot:"#39bae6" },
+  { key:"人文", label:"人文", dot:"#d2a6ff" },
+  { key:"旅游", label:"旅游", dot:"#7fd962" },
+  { key:"AI", label:"AI", dot:"#39bae6" },
+  { key:"科技", label:"科技", dot:"#73d0ff" },
+  { key:"读书", label:"读书", dot:"#ff8f40" },
+  { key:"设计", label:"设计", dot:"#ff7593" },
+  { key:"生活", label:"生活", dot:"#ffd173" }
+];
+
+function getAllTags(){
+  var m = {};
+  allArticles().forEach(function(a){
+    a.tags.forEach(function(t){ m[t] = (m[t] || 0) + 1; });
+  });
+  var tags = [];
+  for(var t in m) tags.push({ name:t, count:m[t] });
+  tags.sort(function(a,b){ return b.count - a.count; });
+  return tags;
+}
+
+function getArticlesByCategory(cat){
+  if(cat === "全部") return allArticles();
+  return allArticles().filter(function(a){ return a.tags.indexOf(cat) !== -1; });
+}
+
+function renderSidebar(){
+  var nav = document.getElementById("sidebarNav");
+  var html = '<div class="nav-label">分类</div>';
+  CATEGORIES.forEach(function(cat){
+    var count = cat.key === "全部" ? allArticles().length : getArticlesByCategory(cat.key).length;
+    html += '<a href="#" class="' + (currentCategory === cat.key ? "active" : "") + '" data-cat="' + cat.key + '">';
+    html += '<span class="dot" style="background:' + cat.dot + '"></span>';
+    html += cat.label;
+    html += '<span class="count">' + count + '</span>';
+    html += '</a>';
+  });
+  nav.innerHTML = html;
+  nav.querySelectorAll("a").forEach(function(a){
+    a.addEventListener("click", function(e){
+      e.preventDefault();
+      currentCategory = a.getAttribute("data-cat");
+      selectedTags = [];
+      renderAll();
+    });
+  });
+}
+
+function renderTagPool(){
+  var tags = getAllTags();
+  var pool = document.getElementById("tagPool");
+  var html = "";
+  tags.forEach(function(t){
+    var sel = selectedTags.indexOf(t.name) !== -1;
+    html += '<button class="tag-chip' + (sel ? " selected" : "") + '" data-tag="' + t.name + '">' + t.name + '</button>';
+  });
+  pool.innerHTML = html;
+  pool.querySelectorAll(".tag-chip").forEach(function(chip){
+    chip.addEventListener("click", function(){
+      var tag = chip.getAttribute("data-tag");
+      var idx = selectedTags.indexOf(tag);
+      if(idx === -1) selectedTags.push(tag);
+      else selectedTags.splice(idx, 1);
+      renderAll();
+    });
+  });
+}
+
+function renderArticles(){
+  var articles = getArticlesByCategory(currentCategory);
+  if(selectedTags.length > 0){
+    articles = articles.filter(function(a){
+      return selectedTags.every(function(t){ return a.tags.indexOf(t) !== -1; });
+    });
+  }
+  if(searchQuery){
+    var q = searchQuery.toLowerCase();
+    articles = articles.filter(function(a){
+      return a.title.toLowerCase().indexOf(q) !== -1
+        || a.excerpt.toLowerCase().indexOf(q) !== -1
+        || a.tags.some(function(t){ return t.toLowerCase().indexOf(q) !== -1; });
+    });
+  }
+
+  document.getElementById("sectionLabel").textContent = currentCategory === "全部" ? "ALL ARTICLES" : "CATEGORY";
+  document.getElementById("sectionTitle").textContent = currentCategory === "全部" ? "全部文章" : currentCategory;
+  document.getElementById("statsCount").textContent = articles.length + " 篇文章";
+
+  var filterInfo = [];
+  if(selectedTags.length > 0) filterInfo.push("标签: " + selectedTags.join(" + "));
+  if(searchQuery) filterInfo.push("搜索: " + searchQuery);
+  document.getElementById("statsFilter").textContent = filterInfo.join("  |  ");
+
+  if(deletedBuiltin.length > 0){
+    document.getElementById("statsActions").innerHTML = '<a href="#" onclick="resetDeleted();return false" style="color:var(--accent2);text-decoration:none">恢复 ' + deletedBuiltin.length + ' 篇已删除的文章</a>';
+  } else {
+    document.getElementById("statsActions").textContent = "";
+  }
+
+  var list = document.getElementById("articleList");
+  if(articles.length === 0){
+    list.innerHTML = '<div class="empty-state"><div class="icon">&#x231B;</div><p>没有匹配的文章</p></div>';
+    return;
+  }
+
+  var grouped = {};
+  articles.forEach(function(a){
+    if(!grouped[a.date]) grouped[a.date] = [];
+    grouped[a.date].push(a);
+  });
+  var dates = Object.keys(grouped).sort().reverse();
+
+  var userSet = {};
+  userArticles.forEach(function(a){ userSet[makeId(a)] = "user"; });
+
+  var html = "";
+  dates.forEach(function(date){
+    html += '<div class="date-divider">' + date + '</div>';
+    grouped[date].forEach(function(a){
+      var id = makeId(a);
+      var isUser = !!userSet[id];
+      var videoUrl = a.video || a.url || "#";
+      var isOriginal = a.type === "original";
+      var isVideoOnly = a.type === "视频";
+      var href = isVideoOnly ? (videoUrl || "#" || a.url) : a.url;
+      if(isOriginal){
+        html += '<div class="article-item original" data-aid="' + id.replace(/'/g,"&#39;") + '" style="cursor:pointer">';
+      } else if(isVideoOnly){
+        html += '<a class="article-item" href="' + href + '" target="_blank" rel="noopener">';
+      } else {
+        html += '<a class="article-item" href="' + a.url + '" target="_blank" rel="noopener">';
+      }
+      html += '<div class="art-meta">';
+      html += '<span class="art-tags">';
+      a.tags.forEach(function(t){
+        html += '<span class="art-tag tag-' + t + '">' + t + '</span>';
+      });
+      html += '</span>';
+      if(isAdmin){
+        html += '<span class="art-actions">';
+        html += '<button class="edit-btn" onclick="event.preventDefault();event.stopPropagation();editArticle(\'' + id.replace(/'/g,"\\'") + '\')">编辑</button>';
+        html += '<button class="del-btn" onclick="event.preventDefault();event.stopPropagation();deleteArticle(\'' + id.replace(/'/g,"\\'") + '\')">删除</button>';
+        html += '</span>';
+      }
+      html += '</div>';
+      html += '<h3>' + a.title + '</h3>';
+      if(isOriginal){
+        html += '<div class="art-excerpt">' + (a.excerpt || a.content.replace(/\n/g," ").slice(0,120) + "...") + '</div>';
+        var videoEmbed = getVideoEmbed(a.video || "");
+        if(videoEmbed){
+          html += videoEmbed;
+        }
+        html += '<div class="art-source">' + (a.source ? '<span>作者: ' + a.source + '</span>' : '') + ' <span class="expand-hint">点击展开阅读</span></div>';
+        html += '<div class="art-content" style="display:none">' + a.content.replace(/\n/g,"<br>") + '</div>';
+      } else {
+        html += '<div class="art-excerpt">' + (a.excerpt || "") + '</div>';
+        if(a.video){
+          html += getVideoEmbed(a.video);
+        }
+        html += '<div class="art-source">' + (isVideoOnly ? '<span>分享自 ' : '来源: <span>') + (a.source || "未知来源") + '</span></div>';
+      }
+      html += isOriginal ? '</div>' : '</a>';
+    });
+  });
+  list.innerHTML = html;
+
+  list.querySelectorAll(".article-item.original").forEach(function(el){
+    el.addEventListener("click", function(e){
+      if(e.target.closest(".del-btn")) return;
+      var content = el.querySelector(".art-content");
+      var hint = el.querySelector(".expand-hint");
+      if(content.style.display === "none"){
+        content.style.display = "block";
+        hint.textContent = "点击收起";
+      } else {
+        content.style.display = "none";
+        hint.textContent = "点击展开阅读";
+      }
+    });
+  });
+}
+
+function getVideoEmbed(url){
+  if(!url) return "";
+  var bilibili = url.match(/bilibili\.com\/video\/(BV[\w]+)/);
+  if(bilibili){
+    return '<div class="video-wrap"><iframe src="https://player.bilibili.com/player.html?bvid=' + bilibili[1] + '&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen></iframe></div><div class="vid-link"><a href="' + url + '" target="_blank" rel="noopener">在B站打开</a></div>';
+  }
+  var ytWatch = url.match(/youtube\.com\/watch\?v=([\w-]+)/);
+  if(ytWatch){
+    return '<div class="video-wrap"><iframe src="https://www.youtube.com/embed/' + ytWatch[1] + '" allowfullscreen></iframe></div><div class="vid-link"><a href="' + url + '" target="_blank" rel="noopener">在YouTube打开</a></div>';
+  }
+  var ytShort = url.match(/youtu\.be\/([\w-]+)/);
+  if(ytShort){
+    return '<div class="video-wrap"><iframe src="https://www.youtube.com/embed/' + ytShort[1] + '" allowfullscreen></iframe></div><div class="vid-link"><a href="' + url + '" target="_blank" rel="noopener">在YouTube打开</a></div>';
+  }
+  var douyin = url.match(/douyin\.com\/video\/(\d+)/) || url.match(/v\.douyin\.com\/[\w]+/) || (url.indexOf("douyin.com") !== -1);
+  if(douyin){
+    return '<a href="' + url + '" target="_blank" rel="noopener" class="video-card"><span class="vc-icon">&#x25B6;</span><span>点击前往抖音观看视频</span><span class="vc-arrow">&rarr;</span></a>';
+  }
+  return "";
+}
+
+function deleteArticle(id){
+  if(!isAdmin) return;
+  userArticles = userArticles.filter(function(a){
+    return makeId(a) !== id;
+  });
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(userArticles));
+
+  var parts = id.split("|");
+  var date = parts[0], title = parts.slice(1).join("|");
+  if(ARTICLES.some(function(a){ return a.date === date && a.title === title; })){
+    if(deletedBuiltin.indexOf(id) === -1){
+      deletedBuiltin.push(id);
+      localStorage.setItem(DELETED_KEY, JSON.stringify(deletedBuiltin));
+    }
+  }
+  renderAll();
+}
+
+function resetDeleted(){
+  deletedBuiltin = [];
+  localStorage.removeItem(DELETED_KEY);
+  renderAll();
+}
+
+function editArticle(id){
+  var article = null;
+  for(var i = 0; i < userArticles.length; i++){
+    if(makeId(userArticles[i]) === id){ article = userArticles[i]; break; }
+  }
+  if(!article) return;
+  editingId = id;
+  document.querySelector("#modalOverlay h3").textContent = "编辑文章";
+  document.getElementById("formTitle").value = article.title;
+  document.getElementById("formUrl").value = article.url === "#" ? "" : article.url;
+  document.getElementById("formExcerpt").value = article.excerpt || "";
+  document.getElementById("formSource").value = article.source || "";
+  document.getElementById("formContent").value = article.content || "";
+  document.getElementById("formVideo").value = article.video || "";
+
+  articleType = article.type || "collect";
+  pickedTags = article.tags.slice();
+  refreshFormTags();
+
+  document.querySelectorAll("#articleTypeSelect .tag-opt").forEach(function(t){ t.classList.remove("picked"); });
+  var typeEl = document.querySelector('#articleTypeSelect [data-type="' + articleType + '"]');
+  if(typeEl) typeEl.classList.add("picked");
+
+  if(articleType === "original"){
+    document.getElementById("groupUrl").style.display = "none";
+    document.getElementById("groupExcerpt").style.display = "none";
+    document.getElementById("groupSource").style.display = "none";
+    document.getElementById("groupContent").style.display = "block";
+    document.getElementById("groupVideo").style.display = "block";
+  } else {
+    document.getElementById("groupUrl").style.display = "block";
+    document.getElementById("groupExcerpt").style.display = "block";
+    document.getElementById("groupSource").style.display = "block";
+    document.getElementById("groupContent").style.display = "none";
+    document.getElementById("groupVideo").style.display = "none";
+  }
+
+  document.querySelectorAll("#sourceSelect .tag-opt").forEach(function(s){ s.classList.remove("picked"); });
+  document.getElementById("wechatHint").style.display = "none";
+  pickedSourceType = "";
+
+  modalOverlay.classList.add("open");
+}
+
+function renderAll(){
+  renderSidebar();
+  renderTagPool();
+  renderArticles();
+}
+
+document.getElementById("searchInput").addEventListener("input", function(){
+  searchQuery = this.value.trim();
+  renderArticles();
+});
+
+var modalOverlay = document.getElementById("modalOverlay");
+var addBtn = document.getElementById("addBtn");
+var modalCancel = document.getElementById("modalCancel");
+var modalSubmit = document.getElementById("modalSubmit");
+
+addBtn.addEventListener("click", function(){
+  editingId = null;
+  document.querySelector("#modalOverlay h3").textContent = "+ 添加文章";
+  modalOverlay.classList.add("open");
+});
+modalCancel.addEventListener("click", function(){
+  editingId = null;
+  document.querySelector("#modalOverlay h3").textContent = "+ 添加文章";
+  modalOverlay.classList.remove("open");
+});
+modalOverlay.addEventListener("click", function(e){ if(e.target === modalOverlay) modalOverlay.classList.remove("open"); });
+
+document.querySelectorAll("#tagSelect .tag-opt").forEach(function(el){
+  el.addEventListener("click", function(){
+    var tag = el.getAttribute("data-tag");
+    var idx = pickedTags.indexOf(tag);
+    if(idx === -1) pickedTags.push(tag);
+    else pickedTags.splice(idx, 1);
+    refreshFormTags();
+  });
+});
+
+document.querySelectorAll("#articleTypeSelect .tag-opt").forEach(function(el){
+  el.addEventListener("click", function(){
+    document.querySelectorAll("#articleTypeSelect .tag-opt").forEach(function(t){ t.classList.remove("picked"); });
+    articleType = el.getAttribute("data-type");
+    el.classList.add("picked");
+    if(articleType === "original"){
+      document.getElementById("groupUrl").style.display = "none";
+      document.getElementById("groupExcerpt").style.display = "none";
+      document.getElementById("groupSource").style.display = "none";
+      document.getElementById("groupContent").style.display = "block";
+      document.getElementById("groupVideo").style.display = "block";
+    } else {
+      document.getElementById("groupUrl").style.display = "block";
+      document.getElementById("groupExcerpt").style.display = "block";
+      document.getElementById("groupSource").style.display = "block";
+      document.getElementById("groupContent").style.display = "none";
+      document.getElementById("groupVideo").style.display = "none";
+    }
+  });
+});
+
+var pickedSourceType = "";
+document.querySelectorAll("#sourceSelect .tag-opt").forEach(function(el){
+  el.addEventListener("click", function(){
+    document.querySelectorAll("#sourceSelect .tag-opt").forEach(function(s){ s.classList.remove("picked"); });
+    pickedSourceType = el.getAttribute("data-src");
+    el.classList.add("picked");
+    document.getElementById("formSource").placeholder = "如：三联生活周刊";
+    if(pickedSourceType === "微信公众号"){
+      document.getElementById("wechatHint").style.display = "block";
+      document.getElementById("formSource").placeholder = "填写公众号名称，如：三联生活周刊";
+    } else {
+      document.getElementById("wechatHint").style.display = "none";
+    }
+  });
+});
+
+document.getElementById("addCustomTag").addEventListener("click", function(){
+  var input = document.getElementById("customTagInput");
+  var tag = input.value.trim();
+  if(!tag) return;
+  if(pickedTags.indexOf(tag) === -1) pickedTags.push(tag);
+  if(!document.querySelector('#tagSelect .tag-opt[data-tag="' + tag + '"]')){
+    var span = document.createElement("span");
+    span.className = "tag-opt picked";
+    span.setAttribute("data-tag", tag);
+    span.textContent = tag;
+    span.addEventListener("click", function(){
+      var idx = pickedTags.indexOf(tag);
+      if(idx === -1) pickedTags.push(tag);
+      else pickedTags.splice(idx, 1);
+      refreshFormTags();
+    });
+    document.getElementById("tagSelect").appendChild(span);
+  }
+  input.value = "";
+  refreshFormTags();
+});
+
+function refreshFormTags(){
+  document.querySelectorAll("#tagSelect .tag-opt").forEach(function(el){
+    var tag = el.getAttribute("data-tag");
+    if(pickedTags.indexOf(tag) !== -1) el.classList.add("picked");
+    else el.classList.remove("picked");
+  });
+}
+
+modalSubmit.addEventListener("click", function(){
+  var title = document.getElementById("formTitle").value.trim();
+  var url = document.getElementById("formUrl").value.trim();
+  var excerpt = document.getElementById("formExcerpt").value.trim();
+  var source = document.getElementById("formSource").value.trim();
+  var content = document.getElementById("formContent").value.trim();
+  var video = document.getElementById("formVideo").value.trim();
+
+  if(!title){ alert("请输入标题"); return; }
+
+  if(articleType === "collect"){
+    if(!excerpt){ alert("请输入摘要"); return; }
+  } else {
+    if(!content){ alert("请输入正文"); return; }
+  }
+  if(pickedTags.length === 0){ alert("请至少选择一个标签"); return; }
+
+  var today = new Date().toISOString().slice(0,10);
+
+  var article = {
+    date: today,
+    title: title,
+    tags: pickedTags.slice(),
+    type: articleType,
+    excerpt: excerpt,
+    url: url || "#",
+    source: source || (articleType === "original" ? "" : "未知来源"),
+    content: content,
+    video: video
+  };
+
+  if(editingId){
+    for(var i = 0; i < userArticles.length; i++){
+      if(makeId(userArticles[i]) === editingId){
+        article.date = userArticles[i].date;
+        userArticles[i] = article;
+        break;
+      }
+    }
+    editingId = null;
+  } else {
+    userArticles.unshift(article);
+  }
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(userArticles));
+
+  document.getElementById("formTitle").value = "";
+  document.getElementById("formUrl").value = "";
+  document.getElementById("formExcerpt").value = "";
+  document.getElementById("formSource").value = "";
+  document.getElementById("formContent").value = "";
+  document.getElementById("formVideo").value = "";
+  pickedTags = [];
+  pickedSourceType = "";
+  articleType = "collect";
+  editingId = null;
+  document.querySelector("#modalOverlay h3").textContent = "+ 添加文章";
+  refreshFormTags();
+  document.querySelectorAll("#sourceSelect .tag-opt").forEach(function(s){ s.classList.remove("picked"); });
+  document.querySelectorAll("#articleTypeSelect .tag-opt").forEach(function(t){ t.classList.remove("picked"); });
+  document.querySelector('#articleTypeSelect [data-type="collect"]').classList.add("picked");
+  document.getElementById("groupUrl").style.display = "block";
+  document.getElementById("groupExcerpt").style.display = "block";
+  document.getElementById("groupSource").style.display = "block";
+  document.getElementById("groupContent").style.display = "none";
+  document.getElementById("groupVideo").style.display = "none";
+  document.getElementById("wechatHint").style.display = "none";
+
+  modalOverlay.classList.remove("open");
+  currentCategory = "全部";
+  selectedTags = [];
+  searchQuery = "";
+  document.getElementById("searchInput").value = "";
+  renderAll();
+});
+
+document.getElementById("exportLink").addEventListener("click", function(e){
+  e.preventDefault();
+  var code = "var ARTICLES = [\n";
+  userArticles.forEach(function(a, i){
+    code += "  { date:\"" + a.date + "\", title:\"" + a.title.replace(/"/g,'\\"') + "\", tags:" + JSON.stringify(a.tags) + ", excerpt:\"" + (a.excerpt||"").replace(/"/g,'\\"') + "\", url:\"" + (a.url||"#").replace(/"/g,'\\"') + "\", source:\"" + (a.source||"").replace(/"/g,'\\"') + "\"";
+    if(a.type === "original") code += ", type:\"original\"";
+    if(a.content) code += ", content:\"" + a.content.replace(/"/g,'\\"').replace(/\n/g,'\\n') + "\"";
+    if(a.video) code += ", video:\"" + a.video.replace(/"/g,'\\"') + "\"";
+    code += " }" + (i < userArticles.length - 1 ? "," : "") + "\n";
+  });
+  code += "];";
+  document.getElementById("exportCode").value = code;
+  document.getElementById("exportOverlay").classList.add("open");
+});
+
+document.getElementById("exportCopy").addEventListener("click", function(){
+  var ta = document.getElementById("exportCode");
+  ta.select();
+  document.execCommand("copy");
+  alert("已复制到剪贴板");
+});
+
+document.getElementById("exportClose").addEventListener("click", function(){
+  document.getElementById("exportOverlay").classList.remove("open");
+});
+
+document.getElementById("exportOverlay").addEventListener("click", function(e){
+  if(e.target === document.getElementById("exportOverlay")){
+    document.getElementById("exportOverlay").classList.remove("open");
+  }
+});
+
+renderAll();
+</script>
+
+</body>
+</html>
