@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>拾光萃集</title>
+    <link>https://8000-74b80a2994b3e575.monkeycode-ai.online</link>
+    <description>收集值得回看的文字 —— 人文、旅游、AI 与科技领域的有益知识。</description>
+    <language>zh-CN</language>
+    <lastBuildDate>Sun, 14 Jun 2026 04:14:49 +0800</lastBuildDate>
+    <atom:link href="https://8000-74b80a2994b3e575.monkeycode-ai.online/rss.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>当我们谈论旅行时，我们在谈论什么</title>
+      <link>https://8000-74b80a2994b3e575.monkeycode-ai.online</link>
+      <guid isPermaLink="false">2026-06-14-当我们谈论旅行时，我们在谈论什么</guid>
+      <description><p>旅行不只是从一个地方到另一个地方，更是一次内心的探索。这篇文章从心理学角度剖析了旅行的深层意义——为什么我们需要出走，又为什么总要归来。</p><p>标签: 旅游, 生活 | 来源: 三联生活周刊</p></description>
+      <pubDate>Sun, 14 Jun 2026 08:00:00 +0800</pubDate>
+      <category>旅游, 生活</category>
+    </item>
+    <item>
+      <title>大语言模型的工作原理：普通人也能看懂的科普</title>
+      <link>https://8000-74b80a2994b3e575.monkeycode-ai.online</link>
+      <guid isPermaLink="false">2026-06-14-大语言模型的工作原理：普通人也能看懂的科普</guid>
+      <description><p>不用数学公式，用最通俗的语言解释 GPT 这类大语言模型到底是如何工作的。从「预测下一个词」到涌现出推理能力，值得收藏。</p><p>标签: AI, 科技 | 来源: 量子位</p></description>
+      <pubDate>Sun, 14 Jun 2026 08:00:00 +0800</pubDate>
+      <category>AI, 科技</category>
+    </item>
+    <item>
+      <title>敦煌：沙漠中的千年艺术宝库</title>
+      <link>https://8000-74b80a2994b3e575.monkeycode-ai.online</link>
+      <guid isPermaLink="false">2026-06-13-敦煌：沙漠中的千年艺术宝库</guid>
+      <description><p>敦煌莫高窟不仅仅是旅游景点，更是中华文明与丝绸之路交汇的见证。本文梳理了敦煌的历史脉络与艺术价值。</p><p>标签: 人文, 历史, 旅游 | 来源: 国家人文历史</p></description>
+      <pubDate>Sat, 13 Jun 2026 08:00:00 +0800</pubDate>
+      <category>人文, 历史, 旅游</category>
+    </item>
+    <item>
+      <title>AI 辅助编程：从 Copilot 到 Agent 的演进</title>
+      <link>https://8000-74b80a2994b3e575.monkeycode-ai.online</link>
+      <guid isPermaLink="false">2026-06-13-AI-辅助编程：从-Copilot-到-Agent-的演进</guid>
+      <description><p>从 Copilot 到 Cursor，从对话式编程到 Agent 自动开发，AI 编程工具正在重塑开发者工作流。</p><p>标签: AI, 科技, 效率 | 来源: 少数派</p></description>
+      <pubDate>Sat, 13 Jun 2026 08:00:00 +0800</pubDate>
+      <category>AI, 科技, 效率</category>
+    </item>
+    <item>
+      <title>京都的巷子：在狭窄中发现的广阔世界</title>
+      <link>https://8000-74b80a2994b3e575.monkeycode-ai.online</link>
+      <guid isPermaLink="false">2026-06-12-京都的巷子：在狭窄中发现的广阔世界</guid>
+      <description><p>京都最迷人的不是金阁寺和清水寺，而是那些不知名的小巷。作者用脚步丈量了三十条巷子，记录温度与故事。</p><p>标签: 旅游, 生活 | 来源: Lonely Planet</p></description>
+      <pubDate>Fri, 12 Jun 2026 08:00:00 +0800</pubDate>
+      <category>旅游, 生活</category>
+    </item>
+    <item>
+      <title>《庄子》中的自由哲学</title>
+      <link>https://8000-74b80a2994b3e575.monkeycode-ai.online</link>
+      <guid isPermaLink="false">2026-06-11-《庄子》中的自由哲学</guid>
+      <description><p>「逍遥游」不是逃避现实，而是超越功利的自由境界。这篇解读帮你重新理解庄子的智慧。</p><p>标签: 人文, 哲学, 读书 | 来源: 哲学研究</p></description>
+      <pubDate>Thu, 11 Jun 2026 08:00:00 +0800</pubDate>
+      <category>人文, 哲学, 读书</category>
+    </item>
+    <item>
+      <title>RAG 技术详解：让大模型拥有外部记忆</title>
+      <link>https://8000-74b80a2994b3e575.monkeycode-ai.online</link>
+      <guid isPermaLink="false">2026-06-11-RAG-技术详解：让大模型拥有外部记忆</guid>
+      <description><p>检索增强生成（RAG）是当下最热门的 AI 应用范式之一。本文从原理到实践讲解如何搭建 RAG 系统。</p><p>标签: AI, 科技, 开源 | 来源: 机器之心</p></description>
+      <pubDate>Thu, 11 Jun 2026 08:00:00 +0800</pubDate>
+      <category>AI, 科技, 开源</category>
+    </item>
+    <item>
+      <title>冰岛环岛自驾：在世界尽头开车</title>
+      <link>https://8000-74b80a2994b3e575.monkeycode-ai.online</link>
+      <guid isPermaLink="false">2026-06-10-冰岛环岛自驾：在世界尽头开车</guid>
+      <description><p>冰岛一号公路全长1300多公里，沿途有冰川、火山、瀑布、黑沙滩。这份指南涵盖路线规划和预算参考。</p><p>标签: 旅游 | 来源: 穷游网</p></description>
+      <pubDate>Wed, 10 Jun 2026 08:00:00 +0800</pubDate>
+      <category>旅游</category>
+    </item>
+    <item>
+      <title>中国古代书院：私人讲学的千年传统</title>
+      <link>https://8000-74b80a2994b3e575.monkeycode-ai.online</link>
+      <guid isPermaLink="false">2026-06-09-中国古代书院：私人讲学的千年传统</guid>
+      <description><p>从岳麓书院到东林书院，中国古代私人讲学传统孕育了无数思想家。重新认识书院文化。</p><p>标签: 人文, 历史 | 来源: 中华书局</p></description>
+      <pubDate>Tue, 09 Jun 2026 08:00:00 +0800</pubDate>
+      <category>人文, 历史</category>
+    </item>
+    <item>
+      <title>Prompt Engineering 从入门到精通</title>
+      <link>https://8000-74b80a2994b3e575.monkeycode-ai.online</link>
+      <guid isPermaLink="false">2026-06-09-Prompt-Engineering-从入门到精通</guid>
+      <description><p>提示词工程是使用大模型的核心技能。系统梳理零样本、少样本、思维链等技巧，配有实例。</p><p>标签: AI, 科技 | 来源: Prompting Guide</p></description>
+      <pubDate>Tue, 09 Jun 2026 08:00:00 +0800</pubDate>
+      <category>AI, 科技</category>
+    </item>
+    <item>
+      <title>深入理解 React Server Components</title>
+      <link>https://8000-74b80a2994b3e575.monkeycode-ai.online</link>
+      <guid isPermaLink="false">2026-06-08-深入理解-React-Server-Components</guid>
+      <description><p>RSC 是 React 近年最重要的架构变革。本文深入探讨服务端组件和客户端组件的边界与协作模式。</p><p>标签: 前端, 科技 | 来源: React Blog</p></description>
+      <pubDate>Mon, 08 Jun 2026 08:00:00 +0800</pubDate>
+      <category>前端, 科技</category>
+    </item>
+    <item>
+      <title>一个人的镰仓：海街日记里的日常</title>
+      <link>https://8000-74b80a2994b3e575.monkeycode-ai.online</link>
+      <guid isPermaLink="false">2026-06-07-一个人的镰仓：海街日记里的日常</guid>
+      <description><p>镰仓不只有灌篮高手的路口，还有无数安静的咖啡馆和寺庙。作者住了一周写下慢旅行手记。</p><p>标签: 旅游, 生活, 读书 | 来源: 旅行家杂志</p></description>
+      <pubDate>Sun, 07 Jun 2026 08:00:00 +0800</pubDate>
+      <category>旅游, 生活, 读书</category>
+    </item>
+    <item>
+      <title>设计系统实战：从零构建组件库</title>
+      <link>https://8000-74b80a2994b3e575.monkeycode-ai.online</link>
+      <guid isPermaLink="false">2026-06-06-设计系统实战：从零构建组件库</guid>
+      <description><p>如何打造一个可维护的设计系统？本文从 Token、组件、文档三个层面分享实践经验。</p><p>标签: 设计, 前端, 开源 | 来源: Ant Design</p></description>
+      <pubDate>Sat, 06 Jun 2026 08:00:00 +0800</pubDate>
+      <category>设计, 前端, 开源</category>
+    </item>
+    <item>
+      <title>硅谷效率工具不完全指南</title>
+      <link>https://8000-74b80a2994b3e575.monkeycode-ai.online</link>
+      <guid isPermaLink="false">2026-06-05-硅谷效率工具不完全指南</guid>
+      <description><p>整理了当前硅谷工程师最常用的效率工具栈，从笔记到项目管理，从自动化到协作。</p><p>标签: 科技, 效率 | 来源: Hacker News</p></description>
+      <pubDate>Fri, 05 Jun 2026 08:00:00 +0800</pubDate>
+      <category>科技, 效率</category>
+    </item>
+  </channel>
+</rss>
