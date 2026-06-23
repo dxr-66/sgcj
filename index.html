@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -238,6 +238,10 @@ body{
       <span class="lock-icon">&#x1F4E4;</span>
       <span>导出文章</span>
     </a>
+    <a class="lock-link" id="debugLink" href="#" title="调试信息" style="font-size:10px;opacity:0.6">
+      <span class="lock-icon">&#x1F6E0;</span>
+      <span id="debugText">密码状态</span>
+    </a>
   </aside>
 
   <main class="main">
@@ -350,6 +354,7 @@ body{
       <span style="display:flex;gap:12px">
         <a href="#" id="pwChangeLink" style="font-size:11px;color:var(--text3);text-decoration:none;font-family:var(--font-mono)">修改密码</a>
         <a href="#" id="pwForgotLink" style="font-size:11px;color:var(--text3);text-decoration:none;font-family:var(--font-mono)">忘记密码</a>
+        <a href="#" id="pwResetLink" style="font-size:11px;color:var(--accent2);text-decoration:none;font-family:var(--font-mono)">重置为默认</a>
       </span>
       <span>
         <button class="btn-cancel" id="pwCancel">取消</button>
@@ -462,6 +467,15 @@ function updateAdminUI(){
   var lock = document.getElementById("lockToggle");
   var icon = document.getElementById("lockIcon");
   var label = document.getElementById("lockLabel");
+  var debugText = document.getElementById("debugText");
+  
+  // 更新调试信息
+  var currentPassword = localStorage.getItem(PW_KEY);
+  var isDefault = !currentPassword || currentPassword === "admin";
+  if(debugText){
+    debugText.textContent = isDefault ? "默认密码" : "已修改";
+  }
+  
   if(isAdmin){
     fab.style.display = "flex";
     lock.classList.add("unlocked");
@@ -511,6 +525,7 @@ function resetPwModal(){
   pwChangeForm.style.display = "none";
   pwChangeLink.style.display = "inline";
   pwForgotLink.style.display = "inline";
+  pwResetLink.style.display = "inline";
   pwForgotForm.style.display = "none";
   pwTitle.textContent = "管理模式";
   pwDesc.textContent = "输入密码进入管理模式，可添加和删除文章。";
@@ -539,9 +554,29 @@ pwSubmit.addEventListener("click", function(){
   }
 });
 
-pwCancel.addEventListener("click", function(){
-  pwOverlay.classList.remove("open");
-});
+  pwCancel.addEventListener("click", function(){
+    pwOverlay.classList.remove("open");
+  });
+  
+  // 调试链接点击事件
+  document.getElementById("debugLink").addEventListener("click", function(e){
+    e.preventDefault();
+    var currentPassword = localStorage.getItem(PW_KEY);
+    var isDefault = !currentPassword || currentPassword === "admin";
+    var debugInfo = "当前密码状态: " + (isDefault ? "默认密码 (admin)" : "已修改");
+    debugInfo += "\nlocalStorage 密码: " + (currentPassword || "未设置");
+    debugInfo += "\n是否已登录: " + (isAdmin ? "是" : "否");
+    debugInfo += "\n\n操作:";
+    debugInfo += "\n1. 点击此处重置为默认密码";
+    debugInfo += "\n2. 点击此处清除所有 localStorage 数据";
+    
+    if(confirm(debugInfo + "\n\n是否重置为默认密码？")){
+      localStorage.removeItem(PW_KEY);
+      localStorage.removeItem(RECOVERY_KEY);
+      alert("已重置为默认密码: admin");
+      updateAdminUI();
+    }
+  });
 
 pwOverlay.addEventListener("click", function(e){
   if(e.target === pwOverlay) pwOverlay.classList.remove("open");
@@ -557,6 +592,7 @@ pwChangeLink.addEventListener("click", function(e){
   pwChangeForm.style.display = "block";
   pwChangeLink.style.display = "none";
   pwForgotLink.style.display = "none";
+  pwResetLink.style.display = "none";
   pwForgotForm.style.display = "none";
   pwTitle.textContent = "修改密码";
   pwDesc.textContent = "设置新的管理模式密码和找回密语。";
@@ -571,6 +607,7 @@ document.getElementById("pwChangeCancel").addEventListener("click", function(){
   pwChangeForm.style.display = "none";
   pwChangeLink.style.display = "inline";
   pwForgotLink.style.display = "inline";
+  pwResetLink.style.display = "inline";
   pwTitle.textContent = "管理模式";
   pwDesc.textContent = "输入密码进入管理模式，可添加和删除文章。";
 });
@@ -605,6 +642,7 @@ document.getElementById("pwChangeSubmit").addEventListener("click", function(){
 
 var pwForgotLink = document.getElementById("pwForgotLink");
 var pwForgotForm = document.getElementById("pwForgotForm");
+var pwResetLink = document.getElementById("pwResetLink");
 var currentVerifyCode = "";
 
 pwForgotLink.addEventListener("click", function(e){
@@ -613,6 +651,7 @@ pwForgotLink.addEventListener("click", function(e){
   pwChangeForm.style.display = "none";
   pwChangeLink.style.display = "none";
   pwForgotLink.style.display = "none";
+  pwResetLink.style.display = "none";
   pwForgotForm.style.display = "block";
   pwTitle.textContent = "找回密码";
   pwDesc.textContent = "输入找回密语以重置密码。";
@@ -622,6 +661,19 @@ pwForgotLink.addEventListener("click", function(e){
   document.getElementById("resetPw2").value = "";
   pwError.style.display = "none";
   pwInput.value = "";
+});
+
+pwResetLink.addEventListener("click", function(e){
+  e.preventDefault();
+  if(confirm("确定要重置为默认密码 (admin) 吗？这将清除所有密码设置。")){
+    localStorage.removeItem(PW_KEY);
+    localStorage.removeItem(RECOVERY_KEY);
+    managerPassword = defaultPassword;
+    pwInput.placeholder = "默认密码: admin";
+    pwError.style.display = "none";
+    pwInput.value = "";
+    alert("已重置为默认密码: admin");
+  }
 });
 
 document.getElementById("forgotCancel").addEventListener("click", function(){
@@ -1189,3 +1241,4 @@ renderAll();
 
 </body>
 </html>
+
