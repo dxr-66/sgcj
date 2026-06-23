@@ -82,6 +82,7 @@ body{
 .article-item .art-excerpt{font-size:13px;color:var(--text2);line-height:1.6;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .article-item .art-source{margin-top:6px;font-size:11px;color:var(--text3);font-family:var(--font-mono)}
 .article-item .art-source span{color:var(--accent2)}
+<<<<<<< HEAD
 .article-item .art-content{font-size:15px;color:var(--text);line-height:1.9;margin-top:14px;padding:28px 32px;background:var(--bg3);border-radius:8px;border-left:3px solid var(--accent);overflow:hidden;max-height:0;opacity:0;transition:max-height .4s ease,opacity .3s ease,padding .3s ease}
 .article-item .art-content.expanded{max-height:8000px;opacity:1;padding:28px 32px}
 .article-item .art-content h1{font-size:1.6em;color:var(--accent);margin:0 0 .6em;padding-bottom:.3em;border-bottom:1px solid var(--border)}
@@ -109,6 +110,9 @@ body{
 .article-item .art-content tr:hover td{background:rgba(57,186,230,.04)}
 .article-item .art-content del{color:var(--text3);text-decoration:line-through}
 .article-item .art-content input[type="checkbox"]{margin-right:6px;accent-color:var(--accent)}
+=======
+.article-item .art-content{font-size:14px;color:var(--text);line-height:1.9;margin-top:14px;padding:16px 20px;background:var(--bg3);border-radius:6px;border-left:2px solid var(--accent)}
+>>>>>>> cd52e16744fcb8111078cacc5a6f0ed078ac1556
 .expand-hint{color:var(--accent);font-size:11px;font-family:var(--font-mono)}
 .video-wrap{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;margin:12px 0;border-radius:6px}
 .video-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none}
@@ -293,7 +297,11 @@ body{
     </div>
     <div class="form-group" id="groupContent" style="display:none">
       <label>正文</label>
+<<<<<<< HEAD
       <textarea id="formContent" placeholder="支持 Markdown 语法...&#10;&#10;## 标题&#10;**加粗** *斜体* ~~删除线~~&#10;> 引用文字&#10;- 列表项&#10;`行内代码` 或 ```代码块```&#10;[链接文字](https://...)&#10;![图片](https://...)" style="min-height:160px"></textarea>
+=======
+      <textarea id="formContent" placeholder="在这里写下你的文章...&#10;&#10;支持多行文字，链接和基本格式。" style="min-height:160px"></textarea>
+>>>>>>> cd52e16744fcb8111078cacc5a6f0ed078ac1556
     </div>
     <div class="form-group" id="groupVideo" style="display:none">
       <label>嵌入视频（可选，粘贴B站/YouTube视频链接）</label>
@@ -440,6 +448,12 @@ var managerPassword = localStorage.getItem(PW_KEY) || defaultPassword;
 
 (function initAuth(){
   isAdmin = sessionStorage.getItem(ADMIN_KEY) === "1";
+  // 设置密码输入框提示
+  var currentPassword = localStorage.getItem(PW_KEY);
+  var pwInput = document.getElementById("pwInput");
+  if(pwInput){
+    pwInput.placeholder = currentPassword ? "输入密码..." : "默认密码: admin";
+  }
   updateAdminUI();
 })();
 
@@ -485,6 +499,8 @@ lockToggle.addEventListener("click", function(e){
     renderAll();
     return;
   }
+  // 每次打开密码输入框时，重新从 localStorage 读取密码
+  managerPassword = localStorage.getItem(PW_KEY) || defaultPassword;
   resetPwModal();
   pwOverlay.classList.add("open");
   setTimeout(function(){ pwInput.focus(); }, 100);
@@ -500,12 +516,17 @@ function resetPwModal(){
   pwDesc.textContent = "输入密码进入管理模式，可添加和删除文章。";
   pwInput.value = "";
   pwError.style.display = "none";
+  // 重置密码输入框的 placeholder，显示当前密码状态
+  var currentPassword = localStorage.getItem(PW_KEY);
+  pwInput.placeholder = currentPassword ? "输入密码..." : "默认密码: admin";
   var savedPhrase = localStorage.getItem(RECOVERY_KEY) || "";
   document.getElementById("recoveryPhrase").value = savedPhrase;
 }
 
 pwSubmit.addEventListener("click", function(){
-  if(pwInput.value === managerPassword){
+  // 验证时重新获取最新密码
+  var currentPassword = localStorage.getItem(PW_KEY) || defaultPassword;
+  if(pwInput.value === currentPassword){
     sessionStorage.setItem(ADMIN_KEY, "1");
     isAdmin = true;
     updateAdminUI();
@@ -791,7 +812,11 @@ function renderArticles(){
           html += videoEmbed;
         }
         html += '<div class="art-source">' + (a.source ? '<span>作者: ' + a.source + '</span>' : '') + ' <span class="expand-hint">点击展开阅读</span></div>';
+<<<<<<< HEAD
         html += '<div class="art-content" style="display:none">' + renderMarkdown(a.content) + '</div>';
+=======
+        html += '<div class="art-content" style="display:none">' + a.content.replace(/\n/g,"<br>") + '</div>';
+>>>>>>> cd52e16744fcb8111078cacc5a6f0ed078ac1556
       } else {
         html += '<div class="art-excerpt">' + (a.excerpt || "") + '</div>';
         if(a.video){
@@ -806,6 +831,7 @@ function renderArticles(){
 
   list.querySelectorAll(".article-item.original").forEach(function(el){
     el.addEventListener("click", function(e){
+<<<<<<< HEAD
       if(e.target.closest(".del-btn") || e.target.closest(".edit-btn") || e.target.closest("a") || e.target.closest("pre")) return;
       var content = el.querySelector(".art-content");
       var hint = el.querySelector(".expand-hint");
@@ -817,6 +843,17 @@ function renderArticles(){
         content.classList.remove("expanded");
         hint.textContent = "点击展开阅读";
         setTimeout(function(){ if(!content.classList.contains("expanded")) content.style.display = "none"; }, 400);
+=======
+      if(e.target.closest(".del-btn")) return;
+      var content = el.querySelector(".art-content");
+      var hint = el.querySelector(".expand-hint");
+      if(content.style.display === "none"){
+        content.style.display = "block";
+        hint.textContent = "点击收起";
+      } else {
+        content.style.display = "none";
+        hint.textContent = "点击展开阅读";
+>>>>>>> cd52e16744fcb8111078cacc5a6f0ed078ac1556
       }
     });
   });
@@ -1123,6 +1160,7 @@ document.getElementById("exportOverlay").addEventListener("click", function(e){
   }
 });
 
+<<<<<<< HEAD
 function renderMarkdown(text){
   if(!text) return "";
   if(typeof marked !== "undefined"){
@@ -1144,6 +1182,8 @@ function renderMarkdown(text){
   return text.replace(/\n/g,"<br>");
 }
 
+=======
+>>>>>>> cd52e16744fcb8111078cacc5a6f0ed078ac1556
 renderAll();
 </script>
 
