@@ -1160,10 +1160,11 @@ document.getElementById("exportLink").addEventListener("click", function(e){
   e.preventDefault();
   var code = "var ARTICLES = [\n";
   userArticles.forEach(function(a, i){
-    code += "  { date:\"" + a.date + "\", title:\"" + a.title.replace(/"/g,'\\"') + "\", tags:" + JSON.stringify(a.tags) + ", excerpt:\"" + (a.excerpt||"").replace(/"/g,'\\"') + "\", url:\"" + (a.url||"#").replace(/"/g,'\\"') + "\", source:\"" + (a.source||"").replace(/"/g,'\\"') + "\"";
+    // 用 JSON.stringify 处理所有字符串字段，自动正确转义反斜杠、引号、换行等
+    code += "  { date:" + JSON.stringify(a.date) + ", title:" + JSON.stringify(a.title) + ", tags:" + JSON.stringify(a.tags) + ", excerpt:" + JSON.stringify(a.excerpt||"") + ", url:" + JSON.stringify(a.url||"#") + ", source:" + JSON.stringify(a.source||"");
     if(a.type === "original") code += ", type:\"original\"";
-    if(a.content) code += ", content:\"" + a.content.replace(/"/g,'\\"').replace(/\n/g,'\\n') + "\"";
-    if(a.video) code += ", video:\"" + a.video.replace(/"/g,'\\"') + "\"";
+    if(a.content) code += ", content:" + JSON.stringify(a.content);
+    if(a.video) code += ", video:" + JSON.stringify(a.video);
     code += " }" + (i < userArticles.length - 1 ? "," : "") + "\n";
   });
   code += "];";
